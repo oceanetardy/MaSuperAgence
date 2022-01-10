@@ -14,6 +14,7 @@
 
     <div class="container">
         <h2>Les derniers biens</h2>
+        <br>
         <div class="row flex">
             {% for property in properties %}
                 <div class="col.3">
@@ -26,6 +27,7 @@
                             <div class="text-primary" style="font-weight: bold; font-size: 2rem;">{{ property.formattedPrice }} € </div>
                         </div>
                     </div>
+                    <br>
                 </div>
             {% endfor %}
         </div>

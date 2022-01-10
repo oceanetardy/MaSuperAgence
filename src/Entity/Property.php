@@ -59,9 +59,9 @@ class Property
     #[ORM\Column(type: 'boolean')]
     private $sold = false;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+   /** #[ORM\Column(type: 'datetime_immutable')]
     private $created_at;
-
+*/
 
     public function __construct()
     {
