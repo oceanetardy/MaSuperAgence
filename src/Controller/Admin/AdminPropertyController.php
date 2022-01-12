@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Property;
+use App\Form\OptionType;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +13,6 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
-
-
-
-
-
-
 
 
 use function compact;
@@ -82,6 +77,7 @@ class AdminPropertyController extends AbstractController{
      */
     public function edit(\App\Entity\Property $property, Request $request )
     {
+
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
 

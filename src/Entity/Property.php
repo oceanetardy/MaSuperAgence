@@ -3,7 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
+use App\Form\OptionType;
+use App\Form\PropertySearchType;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -69,6 +73,9 @@ class Property
     #[ORM\Column(type: 'boolean')]
     private $sold = false;
 
+    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'properties')]
+    private $options;
+
    /** #[ORM\Column(type: 'datetime_immutable')]
     private $created_at;
 */
@@ -76,6 +83,7 @@ class Property
     public function __construct()
     {
         $this->created_at = new DateTime();
+        $this->options = new ArrayCollection();
     }
 
 
@@ -255,6 +263,33 @@ class Property
     public function setCreatedAt(\DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Option[]
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): self
+    {
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+            $option->addProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): self
+    {
+        if ($this->options->removeElement($option)) {
+            $option->removeProperty($this);
+        }
 
         return $this;
     }
