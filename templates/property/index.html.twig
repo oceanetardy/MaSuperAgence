@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title 'Tous nos biens' %}
@@ -16,10 +15,9 @@
                 <div class="col-md-3">
                     {{ form_row(form.minSurface) }}
                  </div>
-                <div class="col-md-3">
+                <div class="col-md-3" >
                     {{ form_row(form.options) }}
                 </div>
-
                 <div class="col-md-3">
                 <button class="btn btn-primary">{{ button|default('Rechercher') }}</button>
                 </div>
@@ -44,6 +42,5 @@
         <div class="pagination">
             {{ knp_pagination_render(properties) }}
         </div>
-
     </div>
 {% endblock %}

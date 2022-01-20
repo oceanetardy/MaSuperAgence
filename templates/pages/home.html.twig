@@ -17,8 +17,15 @@
     <br>
         <div class="row flex">
             {% for property in properties %}
-                <div class="col.3">
+                <div class="col-md-3">
                     <div class="card">
+                        <div class="card-img">
+                            {% if property.filename %}
+                                <img src="{{ vich_uploader_asset(property, 'imageFile') | imagine_filter('thumb') }}" alt="card-img-top" style="width: 100%; height: auto;">
+                            {% else %}
+                                <img src="{{ '/images/properties/emtpy.jpg' | imagine_filter('thumb') }}" alt="card-img-top" style="width: 100%; height: auto;">
+                            {% endif %}
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="{{ path('property.show', {id: property.id, slug: property.slug }) }}">{{ property.title }}</a>

@@ -6,9 +6,15 @@ use App\Entity\Option;
 use App\Entity\Property;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\Uploadable;
+use App\Listener;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
 
 class PropertyType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -37,12 +43,18 @@ class PropertyType extends AbstractType{
             )
             ->add('options', EntityType::class, [
                 'class' => Option::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'multiple' => true,
             ])
             ->add('city',null, [
                 'label' => 'Ville',
             ])
+
+            ->add('imageFile', VichFileType::class, [
+                'required' => false
+            ])
+
             ->add('address', null, [
             'label' => 'Adresse',
             ])

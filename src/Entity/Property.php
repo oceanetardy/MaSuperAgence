@@ -3,21 +3,25 @@
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
-use App\Form\OptionType;
-use App\Form\PropertySearchType;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 use function number_format;
 
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 #[UniqueEntity("title")]
-
+/**
+ * @Vich\Uploadable
+ */
 class Property
 {
     const HEAT = [
@@ -29,7 +33,18 @@ class Property
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
+
+
+    #[ORM\Column(nullable: 'true' )]
+    private $filename;
+
+
+    #[Assert\Image(mimeTypes: ['images/jpg'])]
+    /**
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+     */
+    private ?File $imageFile = null;
 
 
     #[Assert\Length(min: '5')]
@@ -76,13 +91,16 @@ class Property
     #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'properties')]
     private $options;
 
-   /** #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime_immutable', nullable: 'true')]
+    private ?DateTimeImmutable $updated_at;
+
+    #[ORM\Column(type: 'datetime_immutable')]
     private $created_at;
-*/
+
 
     public function __construct()
     {
-        $this->created_at = new DateTime();
+        $this->created_at = new DateTimeImmutable();
         $this->options = new ArrayCollection();
     }
 
@@ -187,7 +205,6 @@ class Property
         return number_format($this->price, 0, '', ' ');
     }
 
-
     public function getHeat(): ?int
     {
         return $this->heat;
@@ -203,8 +220,6 @@ class Property
     public function getHeatType(): string{
         return self::HEAT[$this->heat];
     }
-
-
 
 
     public function getCity(): ?string
@@ -293,4 +308,53 @@ class Property
 
         return $this;
     }
+
+    /**
+     * @return null|string
+     */public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param null|string $filename
+     * @return Property
+    */public function setFilename(?string $filename): Property
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    /**
+    * @return null|File
+    */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+    * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+    */
+    public function setImageFile(?File $imageFile = null)
+    {
+        $this->imageFile = $imageFile;
+
+        if ($this->imageFile instanceof UploadedFile){
+            $this->updated_at = new DateTimeImmutable('now');
+        }
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
 }

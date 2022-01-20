@@ -2,12 +2,15 @@
 
 namespace App\Repository;
 
+use App\Listener;
 use App\Entity\Property;
 use App\Entity\PropertySearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
 
 /**
  * @method Property|null find($id, $lockMode = null, $lockVersion = null)

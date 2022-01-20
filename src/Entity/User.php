@@ -8,6 +8,8 @@ use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface,PasswordAuthenticatedUserInterface,\Serializable
 {
@@ -21,6 +23,7 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface,\Serializ
 
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
+
 
     public function getId(): ?int
     {
@@ -51,16 +54,12 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface,\Serializ
     }
 
 
+
     public function getRoles(): array
     {
-        return array('ROLE_ADMIN');
+       return array('ROLE_ADMIN');
     }
 
-
-    #public function getRoles(): array
-    #{
-    #return ['ROLE_ADMIN'];
-    #}
 
     public function getSalt(){
         return null;
@@ -76,7 +75,7 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface,\Serializ
             $this->id,
             $this->username,
             $this->password
-                                ]);
+                         ]);
     }
 
     public function unserialize($serialized)

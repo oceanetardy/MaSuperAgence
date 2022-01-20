@@ -5,6 +5,7 @@ use App\Entity\Property;
 use App\Form\OptionType;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Annotation\Route;
 //use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use App\Form\PropertyType;
@@ -13,7 +14,13 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Vich\Uploadable;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use App\Listener;
 
+
+
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 use function compact;
 use function key;
@@ -75,7 +82,7 @@ class AdminPropertyController extends AbstractController{
      * @param Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(\App\Entity\Property $property, Request $request )
+    public function edit(\App\Entity\Property $property, Request $request)
     {
 
         $form = $this->createForm(PropertyType::class, $property);
