@@ -94,15 +94,7 @@ class Property
     #[ORM\Column(type: 'datetime_immutable', nullable: 'true')]
     private ?DateTimeImmutable $updated_at;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private $created_at;
 
-
-    public function __construct()
-    {
-        $this->created_at = new DateTimeImmutable();
-        $this->options = new ArrayCollection();
-    }
 
 
     public function getId(): ?int
@@ -270,17 +262,9 @@ class Property
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
-    {
-        $this->created_at = $created_at;
 
-        return $this;
-    }
+
 
     /**
      * @return Collection|Option[]
